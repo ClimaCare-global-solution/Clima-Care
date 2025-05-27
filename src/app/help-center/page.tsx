@@ -123,14 +123,16 @@ export default function HelpCenterPage() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
       {/* Donation Form Modal */}
       {showDonationForm && selectedNGO && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <Card className="w-full max-w-md">
+        <div className="fixed inset-0 backdrop-blur-sm bg-white/10 flex items-center justify-center p-4 z-50">
+          <Card className="w-full max-w-md bg-white text-black rounded-xl shadow-lg">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-lg font-semibold">
                 <Heart className="w-5 h-5 text-red-500" />
                 <span>Doar para {selectedNGO.name}</span>
               </CardTitle>
-              <CardDescription>Preencha os dados da sua doação</CardDescription>
+              <CardDescription className="text-zinc-600">
+                Preencha os dados da sua doação
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleDonationSubmit} className="space-y-4">
@@ -140,8 +142,8 @@ export default function HelpCenterPage() {
                     value={donationForm.type}
                     onValueChange={(value: any) => setDonationForm((prev) => ({ ...prev, type: value }))}
                   >
-                    <SelectTrigger>
-                      <SelectValue />
+                    <SelectTrigger className="bg-zinc-100 text-black">
+                      <SelectValue placeholder="Selecione..." />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="money">💰 Dinheiro</SelectItem>
@@ -166,6 +168,7 @@ export default function HelpCenterPage() {
                     onChange={(e) => setDonationForm((prev) => ({ ...prev, amount: e.target.value }))}
                     placeholder={donationForm.type === "money" ? "100.00" : donationForm.type === "item" ? "5" : "3"}
                     required
+                    className="bg-white text-black"
                   />
                 </div>
 
@@ -177,11 +180,12 @@ export default function HelpCenterPage() {
                     onChange={(e) => setDonationForm((prev) => ({ ...prev, description: e.target.value }))}
                     placeholder="Descreva sua doação..."
                     required
+                    className="bg-white text-black"
                   />
                 </div>
 
                 <div className="flex space-x-3">
-                  <Button type="submit" className="flex-1">
+                  <Button type="submit" className="flex-1 bg-black text-white hover:bg-zinc-800">
                     <CheckCircle className="w-4 h-4 mr-2" />
                     Confirmar Doação
                   </Button>
@@ -192,6 +196,7 @@ export default function HelpCenterPage() {
                       setShowDonationForm(false)
                       setSelectedNGO(null)
                     }}
+                    className="border-zinc-400 text-zinc-600 hover:bg-zinc-100"
                   >
                     Cancelar
                   </Button>
@@ -302,15 +307,16 @@ export default function HelpCenterPage() {
                     <div className="space-y-2">
                       {user && (
                         <Button
-                          className="w-full"
+                          className="w-full bg-red-300 text-red-800 hover:bg-red-500 hover:text-red-100 cursor-pointer transition-colors duration-200"
                           onClick={() => {
-                            setSelectedNGO(ngo)
-                            setShowDonationForm(true)
+                            setSelectedNGO(ngo);
+                            setShowDonationForm(true);
                           }}
                         >
                           <Heart className="w-4 h-4 mr-2" />
                           Fazer Doação
                         </Button>
+
                       )}
                       <Button variant="outline" className="w-full" asChild>
                         <a href={`/help-center/${ngo.id}`}>Saiba mais</a>

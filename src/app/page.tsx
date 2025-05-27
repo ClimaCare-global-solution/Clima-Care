@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import Image from 'next/image'
 import { useState, useEffect } from "react"
 import { brazilianCapitals } from "@/lib/weather-api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -22,7 +22,6 @@ import {
   Shirt,
   Home,
   Coffee,
-  Shield,
   Heart,
   Lightbulb,
 } from "lucide-react"
@@ -81,7 +80,13 @@ export default function Dashboard() {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-6">
             <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center shadow-lg mr-4">
-              <Shield className="w-8 h-8 text-white" />
+              <Image
+                src="/logo-climacare.png"
+                alt="Logo ClimaCare"
+                width={40}
+                height={40}
+                className="rounded-md"
+              />
             </div>
             <div className="text-left">
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">ClimaCare</h1>
@@ -171,9 +176,8 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <ChevronDown
-                    className={`w-6 h-6 text-red-600 transition-transform duration-200 ${
-                      hotTipsOpen ? "rotate-180" : ""
-                    }`}
+                    className={`w-6 h-6 text-red-600 transition-transform duration-200 ${hotTipsOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </div>
               </CardHeader>
@@ -261,9 +265,8 @@ export default function Dashboard() {
                     </div>
                   </div>
                   <ChevronDown
-                    className={`w-6 h-6 text-blue-600 transition-transform duration-200 ${
-                      coldTipsOpen ? "rotate-180" : ""
-                    }`}
+                    className={`w-6 h-6 text-blue-600 transition-transform duration-200 ${coldTipsOpen ? "rotate-180" : ""
+                      }`}
                   />
                 </div>
               </CardHeader>

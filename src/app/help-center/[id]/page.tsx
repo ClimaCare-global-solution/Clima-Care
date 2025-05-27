@@ -181,9 +181,10 @@ export default function NGODetailPage() {
       <SectionContainer className="py-8">
         <div className="container mx-auto px-4 py-8">
           {/* Donation Form Modal */}
+          {/* Donation Form Modal */}
           {showDonationForm && ngo && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-              <Card className="w-full max-w-md">
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <Card className="w-full max-w-md bg-white rounded-xl shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Heart className="w-5 h-5 text-red-500" />
@@ -197,10 +198,16 @@ export default function NGODetailPage() {
                       <Label htmlFor="type">Tipo de Doação</Label>
                       <Select
                         value={donationForm.type}
-                        onValueChange={(value: any) => setDonationForm((prev) => ({ ...prev, type: value }))}
+                        onValueChange={(value) =>
+                          setDonationForm((prev) => ({
+                            ...prev,
+                            type: value as "money" | "item" | "service",
+                          }))
+                        }
+
                       >
                         <SelectTrigger>
-                          <SelectValue />
+                          <SelectValue placeholder="Selecione o tipo de doação" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="money">💰 Dinheiro</SelectItem>
@@ -222,9 +229,18 @@ export default function NGODetailPage() {
                         min="0.01"
                         step={donationForm.type === "money" ? "0.01" : "1"}
                         value={donationForm.amount}
-                        onChange={(e) => setDonationForm((prev) => ({ ...prev, amount: e.target.value }))}
+                        onChange={(e) =>
+                          setDonationForm((prev) => ({
+                            ...prev,
+                            amount: e.target.value,
+                          }))
+                        }
                         placeholder={
-                          donationForm.type === "money" ? "100.00" : donationForm.type === "item" ? "5" : "3"
+                          donationForm.type === "money"
+                            ? "100.00"
+                            : donationForm.type === "item"
+                              ? "5"
+                              : "3"
                         }
                         required
                       />
@@ -235,7 +251,12 @@ export default function NGODetailPage() {
                       <Textarea
                         id="description"
                         value={donationForm.description}
-                        onChange={(e) => setDonationForm((prev) => ({ ...prev, description: e.target.value }))}
+                        onChange={(e) =>
+                          setDonationForm((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
                         placeholder="Descreva sua doação..."
                         required
                       />
@@ -246,7 +267,11 @@ export default function NGODetailPage() {
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Confirmar Doação
                       </Button>
-                      <Button type="button" variant="outline" onClick={() => setShowDonationForm(false)}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowDonationForm(false)}
+                      >
                         Cancelar
                       </Button>
                     </div>
@@ -258,14 +283,16 @@ export default function NGODetailPage() {
 
           {/* Volunteer Form Modal */}
           {showVolunteerForm && ngo && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-              <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <Card className="w-full max-w-md bg-white rounded-xl shadow-lg">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Users className="w-5 h-5 text-blue-500" />
                     <span>Ser Voluntário - {ngo.name}</span>
                   </CardTitle>
-                  <CardDescription>Preencha o formulário para se candidatar como voluntário</CardDescription>
+                  <CardDescription>
+                    Preencha o formulário para se candidatar como voluntário
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleVolunteerSubmit} className="space-y-4">
@@ -274,7 +301,12 @@ export default function NGODetailPage() {
                       <Input
                         id="volunteer-name"
                         value={volunteerForm.name}
-                        onChange={(e) => setVolunteerForm((prev) => ({ ...prev, name: e.target.value }))}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
                         placeholder="Seu nome completo"
                         required
                       />
@@ -286,7 +318,12 @@ export default function NGODetailPage() {
                         id="volunteer-email"
                         type="email"
                         value={volunteerForm.email}
-                        onChange={(e) => setVolunteerForm((prev) => ({ ...prev, email: e.target.value }))}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            email: e.target.value,
+                          }))
+                        }
                         placeholder="seu@email.com"
                         required
                       />
@@ -297,7 +334,12 @@ export default function NGODetailPage() {
                       <Input
                         id="volunteer-phone"
                         value={volunteerForm.phone}
-                        onChange={(e) => setVolunteerForm((prev) => ({ ...prev, phone: e.target.value }))}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            phone: e.target.value,
+                          }))
+                        }
                         placeholder="(11) 99999-9999"
                         required
                       />
@@ -307,7 +349,12 @@ export default function NGODetailPage() {
                       <Label htmlFor="availability">Disponibilidade</Label>
                       <Select
                         value={volunteerForm.availability}
-                        onValueChange={(value) => setVolunteerForm((prev) => ({ ...prev, availability: value }))}
+                        onValueChange={(value) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            availability: value,
+                          }))
+                        }
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione sua disponibilidade" />
@@ -326,7 +373,12 @@ export default function NGODetailPage() {
                       <Textarea
                         id="skills"
                         value={volunteerForm.skills}
-                        onChange={(e) => setVolunteerForm((prev) => ({ ...prev, skills: e.target.value }))}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            skills: e.target.value,
+                          }))
+                        }
                         placeholder="Descreva suas habilidades relevantes..."
                         required
                       />
@@ -337,7 +389,12 @@ export default function NGODetailPage() {
                       <Textarea
                         id="motivation"
                         value={volunteerForm.motivation}
-                        onChange={(e) => setVolunteerForm((prev) => ({ ...prev, motivation: e.target.value }))}
+                        onChange={(e) =>
+                          setVolunteerForm((prev) => ({
+                            ...prev,
+                            motivation: e.target.value,
+                          }))
+                        }
                         placeholder="Conte-nos sua motivação..."
                         required
                       />
@@ -348,7 +405,11 @@ export default function NGODetailPage() {
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Enviar Inscrição
                       </Button>
-                      <Button type="button" variant="outline" onClick={() => setShowVolunteerForm(false)}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setShowVolunteerForm(false)}
+                      >
                         Cancelar
                       </Button>
                     </div>
@@ -357,6 +418,7 @@ export default function NGODetailPage() {
               </Card>
             </div>
           )}
+
           {/* Back Button */}
           <div className="mb-6">
             <Button variant="ghost" onClick={() => router.back()} className="flex items-center space-x-2">
@@ -488,7 +550,7 @@ export default function NGODetailPage() {
                 <CardContent className="space-y-3">
                   {user ? (
                     <>
-                      <Button className="w-full" variant="default" onClick={() => setShowDonationForm(true)}>
+                      <Button className="w-full bg-red-300 text-red-800 hover:bg-red-500 hover:text-red-100 cursor-pointer transition-colors duration-200" variant="default" onClick={() => setShowDonationForm(true)}>
                         <Heart className="w-4 h-4 mr-2" />
                         Fazer Doação
                       </Button>

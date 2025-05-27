@@ -1,5 +1,6 @@
 "use client"
 
+import Image from 'next/image'
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
 import { Button } from "@/components/ui/button"
@@ -28,7 +29,13 @@ export function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="w-5 h-5 text-white" />
+                <Image
+                  src="/logo-climacare.png"
+                  alt="Logo ClimaCare"
+                  width={40}
+                  height={40}
+                  className="rounded-md"
+                />
               </div>
               <span className="text-xl font-bold text-gray-900">ClimaCare</span>
             </Link>

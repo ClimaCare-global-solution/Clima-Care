@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { loginSchema } from "@/lib/schemas"
 
-// Mock user database - in a real app, this would be a proper database
+
 const mockUsers = [
   {
     id: "1",
