@@ -6,12 +6,14 @@ import type { User, AuthContextType, RegisterData } from "@/types"
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
+// 🔧 URL fixa do seu back-end local
+const API_URL = "http://localhost:8080"
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    // Check for stored user data on mount
     const storedUser = localStorage.getItem("user")
     if (storedUser) {
       setUser(JSON.parse(storedUser))
@@ -21,16 +23,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, senha: password }),
       })
 
       if (response.ok) {
         const userData = await response.json()
-        setUser(userData.user)
-        localStorage.setItem("user", JSON.stringify(userData.user))
+        setUser(userData)
+        localStorage.setItem("user", JSON.stringify(userData))
         return true
       }
       return false
@@ -42,16 +44,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (userData: RegisterData): Promise<boolean> => {
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userData),
+        body: JSON.stringify({
+          nome: userData.name,
+          email: userData.email,
+          senha: userData.password,
+          tipo: userData.role === "citizen" ? "cidadao" : "voluntario", // ✅ aqui o ajuste
+          telefone: userData.phone,
+        }),
       })
 
       if (response.ok) {
         const result = await response.json()
-        setUser(result.user)
-        localStorage.setItem("user", JSON.stringify(result.user))
+        setUser(result)
+        localStorage.setItem("user", JSON.stringify(result))
         return true
       }
       return false
