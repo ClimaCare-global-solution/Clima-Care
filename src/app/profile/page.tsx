@@ -28,6 +28,8 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import type { Donation } from "@/types/donation"
+import { useToast } from "@/hooks/use-toast"
+import { ToastContainer } from "@/components/ui/toast"
 
 interface UserStats {
   donationsMade: number
@@ -53,6 +55,7 @@ export default function ProfilePage() {
     donationHistory: [],
     totalDonationAmount: 0,
   })
+  const { toasts, addToast, removeToast } = useToast()
 
   useEffect(() => {
     if (!loading && !user) {
@@ -188,6 +191,7 @@ export default function ProfilePage() {
 
   return (
     <PageContainer background="default">
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
       <SectionContainer className="py-8">
         {/* Header */}
         <div className="mb-8">
@@ -221,9 +225,11 @@ export default function ProfilePage() {
                         <p className="text-sm text-gray-600 mt-1">{roleInfo.description}</p>
                       </div>
 
-                      <Button className="mt-4 sm:mt-0" variant="outline">
-                        <Edit className="w-4 h-4 mr-2" />
-                        Editar Perfil
+                      <Button className="mt-4 sm:mt-0" variant="outline" asChild>
+                        <Link href="/update-user">
+                          <Edit className="w-4 h-4 mr-2" />
+                          Editar Perfil
+                        </Link>
                       </Button>
                     </div>
                   </div>
@@ -443,7 +449,7 @@ export default function ProfilePage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Link href="/help-center">
-                  <Button className="w-full" variant="default">
+                  <Button className="w-full bg-red-300 text-red-800 hover:bg-red-500 hover:text-red-100 cursor-pointer transition-colors duration-200" variant="default">
                     <Heart className="w-4 h-4 mr-2" />
                     Fazer Doação
                   </Button>
@@ -459,7 +465,7 @@ export default function ProfilePage() {
                 )}
 
                 <Link href="/help-center">
-                  <Button className="w-full" variant="outline">
+                  <Button className="w-full cursor-pointer " variant="outline">
                     <Users className="w-4 h-4 mr-2" />
                     Ver Organizações
                   </Button>
