@@ -1,13 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
 import { ToastContainer } from "@/components/ui/toast"
-import { ngoRegistrationSchema, type NGORegistrationFormData } from "@/lib/schemas"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -20,18 +18,17 @@ import { ArrowLeft, Building2, CheckCircle, Lock, User } from "lucide-react"
 import Link from "next/link"
 
 export default function RegisterNGOPage() {
-  const [formData, setFormData] = useState<NGORegistrationFormData>({
+  const [formData, setFormData] = useState({
     name: "",
-    description: "",
     email: "",
     location: "",
     category: "general",
     phone: "",
     website: "",
-    mission: "",
+    missao: "",
     cnpj: "",
   })
-  const [errors, setErrors] = useState<Partial<NGORegistrationFormData>>({})
+  const [errors, setErrors] = useState<any>({})
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -39,7 +36,6 @@ export default function RegisterNGOPage() {
   const router = useRouter()
   const { toasts, addToast, removeToast } = useToast()
 
-  // Redirect to login if user is not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
       addToast({
@@ -57,7 +53,34 @@ export default function RegisterNGOPage() {
     setErrors({})
 
     try {
-      const validatedData = ngoRegistrationSchema.parse(formData)
+      const response = await fetch("http://localhost:8080/ong/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: formData.name,
+          email: formData.email,
+          telefone: formData.phone,
+          site: formData.website,
+          endereco: formData.location,
+          cnpj: formData.cnpj,
+          missao: formData.missao,
+          categoria: formData.category,
+        }),
+      })
+
+      if (response.status === 409) {
+        addToast({
+          type: "error",
+          title: "CNPJ já cadastrado",
+          description: "Já existe uma organização cadastrada com este CNPJ.",
+        })
+        setLoading(false)
+        return
+      }
+
+      if (!response.ok) {
+        throw new Error("Erro ao registrar organização")
+      }
 
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
@@ -67,15 +90,7 @@ export default function RegisterNGOPage() {
         title: "Cadastro enviado com sucesso!",
         description: "Sua solicitação será analisada pela nossa equipe.",
       })
-    } catch (error: any) {
-      if (error.errors) {
-        const fieldErrors: Partial<NGORegistrationFormData> = {}
-        error.errors.forEach((err: any) => {
-          fieldErrors[err.path[0] as keyof NGORegistrationFormData] = err.message
-        })
-        setErrors(fieldErrors)
-      }
-
+    } catch (error) {
       addToast({
         type: "error",
         title: "Erro no cadastro",
@@ -89,19 +104,18 @@ export default function RegisterNGOPage() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    if (errors[name as keyof NGORegistrationFormData]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }))
+    if (errors[name]) {
+      setErrors((prev: any) => ({ ...prev, [name]: undefined }))
     }
   }
 
   const handleCategoryChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, category: value as NGORegistrationFormData["category"] }))
+    setFormData((prev) => ({ ...prev, category: value }))
     if (errors.category) {
-      setErrors((prev) => ({ ...prev, category: undefined }))
+      setErrors((prev: any) => ({ ...prev, category: undefined }))
     }
   }
 
-  // Show loading state while checking authentication
   if (authLoading) {
     return (
       <PageContainer background="default">
@@ -119,7 +133,6 @@ export default function RegisterNGOPage() {
     )
   }
 
-  // Show login required message if user is not authenticated
   if (!user) {
     return (
       <PageContainer background="default">
@@ -146,14 +159,6 @@ export default function RegisterNGOPage() {
                     <Link href="/register">Criar Conta</Link>
                   </Button>
                 </div>
-                <div className="mt-4">
-                  <Button asChild variant="ghost">
-                    <Link href="/help-center">
-                      <ArrowLeft className="w-4 h-4 mr-2" />
-                      Voltar para Central de Ajuda
-                    </Link>
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </div>
@@ -175,22 +180,6 @@ export default function RegisterNGOPage() {
               <p className="text-green-700 mb-6">
                 Sua solicitação de cadastro para <strong>{formData.name}</strong> foi recebida com sucesso.
               </p>
-              <div className="bg-white p-6 rounded-lg border border-green-200 mb-6 text-left">
-                <p className="text-gray-700 mb-4">
-                  <strong>Próximos passos:</strong>
-                </p>
-                <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                  <li>
-                    Sua solicitação passará por um processo de revisão para confirmar a legitimidade da organização.
-                  </li>
-                  <li>
-                    Nossa equipe poderá entrar em contato através do email fornecido para solicitar documentos
-                    adicionais.
-                  </li>
-                  <li>O processo de revisão geralmente leva de 3 a 5 dias úteis.</li>
-                  <li>Você receberá uma notificação por email quando sua organização for aprovada.</li>
-                </ul>
-              </div>
               <div className="flex justify-center space-x-4">
                 <Button asChild variant="outline">
                   <Link href="/help-center">
@@ -221,160 +210,56 @@ export default function RegisterNGOPage() {
             </Button>
           </div>
 
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                <Building2 className="w-6 h-6 text-blue-600" />
-              </div>
-              <h1 className="text-3xl font-bold text-gray-900">Cadastrar Nova Organização</h1>
-            </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Registre sua organização para ajudar comunidades durante eventos climáticos extremos
-            </p>
-
-            {/* User info display */}
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 max-w-md mx-auto">
-              <p className="text-sm text-blue-800">
-                <User className="w-4 h-4 inline mr-1" />
-                Cadastrando como: <strong>{user.name}</strong> ({user.email})
-              </p>
-            </div>
-          </div>
-
           <Card>
             <CardHeader>
               <CardTitle>Informações da Organização</CardTitle>
               <CardDescription>
-                Preencha os dados abaixo para cadastrar sua organização. Todos os campos marcados com * são
-                obrigatórios.
+                Preencha os dados abaixo para cadastrar sua organização. Todos os campos marcados com * são obrigatórios.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="name">
-                      Nome da Organização <span className="text-red-500">*</span>
-                    </Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      className={errors.name ? "border-red-500" : ""}
-                      placeholder="Nome completo da organização"
-                      required
-                    />
-                    {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+                    <Label htmlFor="name">Nome da Organização *</Label>
+                    <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
                   </div>
 
                   <div>
-                    <Label htmlFor="mission">
-                      Missão <span className="text-red-500">*</span>
-                    </Label>
+                    <Label htmlFor="missao">Missão *</Label>
                     <Textarea
-                      id="mission"
-                      name="mission"
-                      value={formData.mission}
+                      id="missao"
+                      name="missao"
+                      value={formData.missao}
                       onChange={handleChange}
-                      className={errors.mission ? "border-red-500" : ""}
-                      placeholder="Descreva brevemente a missão da sua organização"
                       required
                     />
-                    {errors.mission && <p className="mt-1 text-sm text-red-600">{errors.mission}</p>}
                   </div>
 
                   <div>
-                    <Label htmlFor="description">
-                      Descrição Detalhada <span className="text-red-500">*</span>
-                    </Label>
-                    <Textarea
-                      id="description"
-                      name="description"
-                      value={formData.description}
-                      onChange={handleChange}
-                      className={`${errors.description ? "border-red-500" : ""} min-h-[120px]`}
-                      placeholder="Descreva detalhadamente o trabalho da sua organização, histórico e como ajuda durante eventos climáticos"
-                      required
-                    />
-                    {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="email">
-                        Email de Contato <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={errors.email ? "border-red-500" : ""}
-                        placeholder="contato@suaorganizacao.org"
-                        required
-                      />
-                      {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
-                    </div>
-
-                    <div>
-                      <Label htmlFor="phone">Telefone</Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className={errors.phone ? "border-red-500" : ""}
-                        placeholder="(11) 99999-9999"
-                      />
-                      {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="cnpj">
-                        CNPJ <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="cnpj"
-                        name="cnpj"
-                        value={formData.cnpj}
-                        onChange={handleChange}
-                        className={errors.cnpj ? "border-red-500" : ""}
-                        placeholder="00.000.000/0000-00"
-                        required
-                      />
-                      {errors.cnpj && <p className="mt-1 text-sm text-red-600">{errors.cnpj}</p>}
-                      <p className="mt-1 text-xs text-gray-500">
-                        Digite apenas números ou no formato XX.XXX.XXX/XXXX-XX
-                      </p>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="location">
-                        Localização <span className="text-red-500">*</span>
-                      </Label>
-                      <Input
-                        id="location"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        className={errors.location ? "border-red-500" : ""}
-                        placeholder="Cidade, Estado"
-                        required
-                      />
-                      {errors.location && <p className="mt-1 text-sm text-red-600">{errors.location}</p>}
-                    </div>
+                    <Label htmlFor="email">Email de Contato *</Label>
+                    <Input id="email" name="email" value={formData.email} onChange={handleChange} required />
                   </div>
 
                   <div>
-                    <Label htmlFor="category">
-                      Categoria <span className="text-red-500">*</span>
-                    </Label>
+                    <Label htmlFor="phone">Telefone</Label>
+                    <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="cnpj">CNPJ *</Label>
+                    <Input id="cnpj" name="cnpj" value={formData.cnpj} onChange={handleChange} required />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="location">Localização *</Label>
+                    <Input id="location" name="location" value={formData.location} onChange={handleChange} required />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="category">Categoria *</Label>
                     <Select value={formData.category} onValueChange={handleCategoryChange}>
-                      <SelectTrigger className={errors.category ? "border-red-500" : ""}>
+                      <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent>
@@ -384,30 +269,12 @@ export default function RegisterNGOPage() {
                         <SelectItem value="general">Geral</SelectItem>
                       </SelectContent>
                     </Select>
-                    {errors.category && <p className="mt-1 text-sm text-red-600">{errors.category}</p>}
                   </div>
 
                   <div>
-                    <Label htmlFor="website">Website (Opcional)</Label>
-                    <Input
-                      id="website"
-                      name="website"
-                      value={formData.website}
-                      onChange={handleChange}
-                      className={errors.website ? "border-red-500" : ""}
-                      placeholder="https://www.suaorganizacao.org"
-                    />
-                    {errors.website && <p className="mt-1 text-sm text-red-600">{errors.website}</p>}
-                    <p className="mt-1 text-xs text-gray-500">Inclua o protocolo (http:// ou https://)</p>
+                    <Label htmlFor="website">Website</Label>
+                    <Input id="website" name="website" value={formData.website} onChange={handleChange} />
                   </div>
-                </div>
-
-                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                  <p className="text-sm text-blue-800">
-                    <strong>Importante:</strong> Todas as organizações passam por um processo de verificação antes de
-                    serem listadas na plataforma. Poderemos solicitar documentos adicionais para comprovar a
-                    legitimidade da organização.
-                  </p>
                 </div>
 
                 <div className="flex justify-end space-x-3">

@@ -11,7 +11,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    
     const storedUser = localStorage.getItem("user")
     if (storedUser) {
       setUser(JSON.parse(storedUser))
@@ -19,45 +18,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(false)
   }, [])
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<boolean | string> => {
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch("http://localhost:8080/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, senha: password }),
       })
+
+      if (response.status === 404) {
+        return "Email ou senha inválidos"
+      }
 
       if (response.ok) {
         const userData = await response.json()
-        setUser(userData.user)
-        localStorage.setItem("user", JSON.stringify(userData.user))
+        setUser(userData)
+        localStorage.setItem("user", JSON.stringify(userData))
         return true
       }
-      return false
+
+      return "Erro ao fazer login"
     } catch (error) {
-      console.error("Login error:", error)
-      return false
+      console.error("Erro no login:", error)
+      return "Erro de rede ao fazer login"
     }
   }
 
-  const register = async (userData: RegisterData): Promise<boolean> => {
+  const register = async (userData: RegisterData): Promise<boolean | string> => {
     try {
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch("http://localhost:8080/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(userData),
       })
 
+      if (response.status === 409) {
+        return "Email já cadastrado"
+      }
+
       if (response.ok) {
         const result = await response.json()
-        setUser(result.user)
-        localStorage.setItem("user", JSON.stringify(result.user))
+        setUser(result)
+        localStorage.setItem("user", JSON.stringify(result))
         return true
       }
-      return false
+
+      return "Erro ao registrar"
     } catch (error) {
-      console.error("Register error:", error)
-      return false
+      console.error("Erro no registro:", error)
+      return "Erro de rede ao registrar"
     }
   }
 
@@ -66,7 +75,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem("user")
   }
 
-  return <AuthContext.Provider value={{ user, login, register, logout, loading }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {
