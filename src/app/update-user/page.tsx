@@ -1,21 +1,33 @@
-"use client"
+'use client'
 
-import type React from "react"
-
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/contexts/auth-context"
-import { useToast } from "@/hooks/use-toast"
-import { ToastContainer } from "@/components/ui/toast"
-import { profileUpdateSchema, type ProfileUpdateFormData } from "@/lib/schemas"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { PageContainer } from "@/components/body/page-container"
-import { SectionContainer } from "@/components/body/section-container"
-import { ArrowLeft, User, Eye, EyeOff, Save, Lock } from "lucide-react"
-import Link from "next/link"
+import type React from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/auth-context'
+import { useToast } from '@/hooks/use-toast'
+import { ToastContainer } from '@/components/ui/toast'
+import { profileUpdateSchema, type ProfileUpdateFormData } from '@/lib/schemas'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { PageContainer } from '@/components/body/page-container'
+import { SectionContainer } from '@/components/body/section-container'
+import {
+  ArrowLeft,
+  User,
+  Eye,
+  EyeOff,
+  Save,
+  Lock,
+} from 'lucide-react'
+import Link from 'next/link'
 
 export default function UpdateUserPage() {
   const { user, loading: authLoading } = useAuth()
@@ -23,10 +35,10 @@ export default function UpdateUserPage() {
   const { toasts, addToast, removeToast } = useToast()
 
   const [formData, setFormData] = useState<ProfileUpdateFormData>({
-    email: "",
-    currentPassword: "",
-    newPassword: "",
-    confirmNewPassword: "",
+    email: '',
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
   })
   const [errors, setErrors] = useState<Partial<ProfileUpdateFormData>>({})
   const [loading, setLoading] = useState(false)
@@ -34,15 +46,14 @@ export default function UpdateUserPage() {
   const [showNewPassword, setShowNewPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-  // Redirect to login if user is not authenticated
   useEffect(() => {
     if (!authLoading && !user) {
       addToast({
-        type: "error",
-        title: "Acesso negado",
-        description: "Você precisa estar logado para editar seu perfil.",
+        type: 'error',
+        title: 'Acesso negado',
+        description: 'Você precisa estar logado para editar seu perfil.',
       })
-      router.push("/login")
+      router.push('/login')
     } else if (user) {
       setFormData((prev) => ({
         ...prev,
@@ -67,23 +78,36 @@ export default function UpdateUserPage() {
     try {
       const validatedData = profileUpdateSchema.parse(formData)
 
-      // In a real app, this would send data to the backend
-      // For now, we'll simulate a successful update
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      addToast({
-        type: "success",
-        title: "Perfil atualizado!",
-        description: "Suas informações foram atualizadas com sucesso.",
+      const response = await fetch('http://localhost:8080/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: validatedData.email,
+          senha: validatedData.currentPassword,
+          novaSenha: validatedData.newPassword,
+        }),
       })
 
-      // Clear password fields after successful update
-      setFormData((prev) => ({
-        ...prev,
-        currentPassword: "",
-        newPassword: "",
-        confirmNewPassword: "",
-      }))
+      if (response.ok) {
+        addToast({
+          type: 'success',
+          title: 'Perfil atualizado!',
+          description: 'Suas informações foram atualizadas com sucesso.',
+        })
+
+        setFormData((prev) => ({
+          ...prev,
+          currentPassword: '',
+          newPassword: '',
+          confirmNewPassword: '',
+        }))
+      } else {
+        addToast({
+          type: 'error',
+          title: 'Erro ao atualizar',
+          description: 'Verifique se a senha atual está correta.',
+        })
+      }
     } catch (error: any) {
       if (error.errors) {
         const fieldErrors: Partial<ProfileUpdateFormData> = {}
@@ -92,18 +116,16 @@ export default function UpdateUserPage() {
         })
         setErrors(fieldErrors)
       }
-
       addToast({
-        type: "error",
-        title: "Erro ao atualizar",
-        description: "Verifique os campos e tente novamente.",
+        type: 'error',
+        title: 'Erro ao atualizar',
+        description: 'Verifique os campos e tente novamente.',
       })
     } finally {
       setLoading(false)
     }
   }
 
-  // Show loading state while checking authentication
   if (authLoading) {
     return (
       <PageContainer background="default">
@@ -121,7 +143,6 @@ export default function UpdateUserPage() {
     )
   }
 
-  // Show login required message if user is not authenticated
   if (!user) {
     return (
       <PageContainer background="default">
@@ -180,7 +201,7 @@ export default function UpdateUserPage() {
             <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 max-w-md mx-auto">
               <p className="text-sm text-blue-800">
                 <User className="w-4 h-4 inline mr-1" />
-                Editando perfil de: <strong>{user.name}</strong>
+                Editando perfil de: <strong>{user.nome}</strong>
               </p>
             </div>
           </div>

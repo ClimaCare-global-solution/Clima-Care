@@ -1,12 +1,11 @@
-export type UserRole = "citizen" | "volunteer" | "admin"
+export type UserRole = "cidadao" | "voluntario"
 
 export interface User {
   id: string
   email: string
-  name: string
-  role: UserRole
-  phone?: string
-  location?: string
+  nome: string // agora compatível com o back-end
+  tipo: UserRole
+  telefone?: string
   createdAt: string
 }
 
@@ -40,17 +39,16 @@ export interface HelpRequest {
 
 export interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<boolean>
-  register: (userData: RegisterData) => Promise<boolean>
+  login: (email: string, password: string) => Promise<boolean | string>
+  register: (userData: RegisterData) => Promise<boolean | string>
   logout: () => void
   loading: boolean
 }
 
 export interface RegisterData {
-  name: string
+  nome: string
   email: string
-  password: string
-  role: UserRole
-  phone?: string
-  location?: string
+  senha: string
+  tipo: UserRole
+  telefone?: string
 }

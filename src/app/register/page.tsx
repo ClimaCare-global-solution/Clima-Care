@@ -1,14 +1,12 @@
-"use client"
+'use client'
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
 import { ToastContainer } from "@/components/ui/toast"
-import { registerSchema, type RegisterFormData } from "@/lib/schemas"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,13 +14,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlertTriangle, Eye, EyeOff } from "lucide-react"
 
+type RegisterFormData = {
+  name: string
+  email: string
+  password: string
+  confirmPassword: string
+  role: "cidadao" | "voluntario"
+  phone?: string
+  location?: string
+}
+
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
-    role: "citizen",
+    role: "cidadao",
     phone: "",
     location: "",
   })
@@ -40,35 +48,38 @@ export default function RegisterPage() {
     setLoading(true)
     setErrors({})
 
-    try {
-      const validatedData = registerSchema.parse(formData)
-      const success = await register(validatedData)
-
-      if (success) {
-        addToast({
-          type: "success",
-          title: "Cadastro realizado com sucesso!",
-          description: "Bem-vindo ao ClimaCare.",
-        })
-        router.push("/")
-      } else {
-        addToast({
-          type: "error",
-          title: "Erro no cadastro",
-          description: "Não foi possível criar sua conta. Tente novamente.",
-        })
-      }
-    } catch (error: any) {
-      if (error.errors) {
-        const fieldErrors: Partial<RegisterFormData> = {}
-        error.errors.forEach((err: any) => {
-          fieldErrors[err.path[0] as keyof RegisterFormData] = err.message
-        })
-        setErrors(fieldErrors)
-      }
-    } finally {
+    if (formData.password !== formData.confirmPassword) {
+      setErrors({ confirmPassword: "As senhas não coincidem" })
       setLoading(false)
+      return
     }
+
+    const mappedData = {
+      nome: formData.name,
+      email: formData.email,
+      senha: formData.password,
+      tipo: formData.role,
+      telefone: formData.phone,
+    }
+
+    const success = await register(mappedData)
+
+    if (success === true) {
+      addToast({
+        type: "success",
+        title: "Cadastro realizado com sucesso!",
+        description: "Bem-vindo ao ClimaCare.",
+      })
+      router.push("/")
+    } else {
+      addToast({
+        type: "error",
+        title: "Erro no cadastro",
+        description: typeof success === "string" ? success : "Não foi possível criar sua conta.",
+      })
+    }
+
+    setLoading(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,13 +91,12 @@ export default function RegisterPage() {
   }
 
   const handleRoleChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, role: value as RegisterFormData["role"] }))
+    setFormData((prev) => ({ ...prev, role: value as "cidadao" | "voluntario" }))
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -140,13 +150,10 @@ export default function RegisterPage() {
                     <SelectValue placeholder="Selecione seu tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="citizen">Cidadão</SelectItem>
-                    <SelectItem value="volunteer">Voluntário</SelectItem>
+                    <SelectItem value="cidadao">Cidadão</SelectItem>
+                    <SelectItem value="voluntario">Voluntário</SelectItem>
                   </SelectContent>
                 </Select>
-                <p className="mt-1 text-xs text-gray-500">
-                  Cidadão: Pode solicitar ajuda e fazer doações • Voluntário: Pode oferecer ajuda e fazer doações
-                </p>
               </div>
 
               <div>
@@ -194,11 +201,7 @@ export default function RegisterPage() {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
+                    {showPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
                   </button>
                 </div>
                 {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
@@ -222,14 +225,12 @@ export default function RegisterPage() {
                     className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
-                    ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
-                    )}
+                    {showConfirmPassword ? <EyeOff className="h-4 w-4 text-gray-400" /> : <Eye className="h-4 w-4 text-gray-400" />}
                   </button>
                 </div>
-                {errors.confirmPassword && <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>}
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                )}
               </div>
 
               <Button type="submit" className="w-full" disabled={loading}>
