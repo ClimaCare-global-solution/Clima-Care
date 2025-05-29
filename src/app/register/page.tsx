@@ -149,7 +149,7 @@ export default function RegisterPage() {
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione seu tipo" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="cidadao">Cidadão</SelectItem>
                     <SelectItem value="voluntario">Voluntário</SelectItem>
                   </SelectContent>

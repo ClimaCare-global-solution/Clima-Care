@@ -74,11 +74,11 @@ export default function ProfilePage() {
   return (
     <PageContainer background="default">
       <ToastContainer toasts={toasts} onRemove={removeToast} />
-      <SectionContainer className="py-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Meu Perfil</h1>
-        <p className="text-lg text-gray-600 mb-8">Gerencie suas informações e acompanhe sua atividade na plataforma</p>
+      <SectionContainer className="py-8 ">
+        <h1 className="flex justify-center text-3xl font-bold text-gray-900 mb-2">Meu Perfil</h1>
+        <p className="flex justify-center text-lg text-gray-600 mb-8">Gerencie suas informações e acompanhe sua atividade na plataforma</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="flex justify-center">
           <div className="lg:col-span-2 space-y-6">
             <Card className="overflow-hidden">
               <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-24" />
@@ -129,7 +129,7 @@ export default function ProfilePage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="justify-items-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div className="p-4 rounded-lg bg-red-50 flex gap-3 items-center">
                     <Heart className="w-6 h-6 text-red-500" />
                     <div>
@@ -144,34 +144,7 @@ export default function ProfilePage() {
                       <p className="text-2xl font-bold text-gray-900">R$ {totalDonated.toFixed(2)}</p>
                     </div>
                   </div>
-                  <div className="p-4 rounded-lg bg-purple-50 flex gap-3 items-center">
-                    <HandHeart className="w-6 h-6 text-purple-500" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">Ajudas Prestadas</p>
-                      <p className="text-2xl font-bold text-gray-900">0</p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="bg-gradient-to-br from-blue-50 to-indigo-100 border-blue-200">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-800">
-                  <Award className="w-5 h-5" />
-                  Impacto Total
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center">
-                  <p className="text-4xl font-bold text-blue-900 mb-2">{donations.length}</p>
-                  <p className="text-blue-700 text-sm">
-                    {user.tipo === "voluntario"
-                      ? "Pessoas ajudadas através de suas ações"
-                      : "Interações positivas na comunidade"}
-                  </p>
+                  
                 </div>
               </CardContent>
             </Card>

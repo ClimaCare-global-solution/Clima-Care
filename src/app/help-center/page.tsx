@@ -121,10 +121,10 @@ export default function HelpCenterPage() {
                   <Label htmlFor="type">Tipo de Doação</Label>
                   <Select value={donationForm.type} onValueChange={(value) => setDonationForm((prev) => ({ ...prev, type: value }))}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       <SelectItem value="money">💰 Dinheiro</SelectItem>
                       <SelectItem value="item">📦 Itens</SelectItem>
-                      <SelectItem value="service">🕐 Serviço</SelectItem>
+            
                     </SelectContent>
                   </Select>
                 </div>
@@ -193,7 +193,7 @@ export default function HelpCenterPage() {
               <SelectTrigger className="w-full md:w-48">
                 <SelectValue placeholder="Filtrar por categoria" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white">
                 <SelectItem value="all">Todas as categorias</SelectItem>
                 <SelectItem value="shelter">Abrigo</SelectItem>
                 <SelectItem value="food">Alimentação</SelectItem>
@@ -206,15 +206,7 @@ export default function HelpCenterPage() {
             {filteredNGOs.map((ngo) => (
               <Card key={ngo.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 shadow-md">
                 <CardHeader className="text-center pb-4">
-                  <div className="mx-auto mb-4 relative">
-                    <Image
-                      src={ngo.logo || "/placeholder.svg"}
-                      alt={`Logo ${ngo.nome}`}
-                      width={80}
-                      height={80}
-                      className="rounded-full border-4 border-blue-100"
-                    />
-                  </div>
+                  
                   <div className="space-y-2">
                     <CardTitle className="text-xl text-gray-900">{ngo.nome}</CardTitle>
                     <div className="flex items-center justify-center space-x-2">
@@ -244,14 +236,15 @@ export default function HelpCenterPage() {
                     )}
                   </div>
                   <div className="space-y-2">
-                    {user && (
-                      <Button className="w-full bg-red-300 text-red-800 hover:bg-red-500 hover:text-red-100" onClick={() => { setSelectedNGO(ngo); setShowDonationForm(true) }}>
-                        <Heart className="w-4 h-4 mr-2" /> Fazer Doação
-                      </Button>
-                    )}
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link href={`/help-center/${ngo.id}`}>Saiba mais</Link>
-                    </Button>
+                    
+                  <Button
+                    variant="outline"
+                    className="w-full bg-gray-100 text-black hover:bg-blue-500 hover:text-white cursor-pointer transition-colors"
+                    asChild
+                  >
+                    <Link href={`/help-center/${ngo.id}`}>Saiba mais</Link>
+                  </Button>
+
                   </div>
                 </CardContent>
               </Card>

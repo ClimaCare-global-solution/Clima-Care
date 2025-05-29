@@ -157,7 +157,7 @@ export default function NGODetailPage() {
                         <SelectTrigger>
                           <SelectValue placeholder="Selecione o tipo de doação" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-white">
                           <SelectItem value="money">💰 Dinheiro</SelectItem>
                           <SelectItem value="item">📦 Itens/Produtos</SelectItem>
                           <SelectItem value="service">🕐 Serviço/Tempo</SelectItem>
@@ -216,15 +216,7 @@ export default function NGODetailPage() {
             <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardHeader className="text-center">
-                  <div className="mx-auto mb-4">
-                    <Image
-                      src={ngo.logo || "/placeholder.svg"}
-                      alt={`Logo ${ngo.nome}`}
-                      width={120}
-                      height={120}
-                      className="rounded-full border-4 border-blue-100"
-                    />
-                  </div>
+                 
                   <CardTitle className="text-3xl text-gray-900">{ngo.nome}</CardTitle>
                   <div className="flex items-center justify-center space-x-2 mt-2">
                     <MapPin className="w-5 h-5 text-gray-500" />

@@ -262,7 +262,7 @@ export default function RegisterNGOPage() {
                       <SelectTrigger>
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white">
                         <SelectItem value="shelter">Abrigo</SelectItem>
                         <SelectItem value="food">Alimentação</SelectItem>
                         <SelectItem value="medical">Médico</SelectItem>
