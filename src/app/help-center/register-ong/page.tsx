@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { PageContainer } from "@/components/body/page-container"
 import { SectionContainer } from "@/components/body/section-container"
-import { ArrowLeft, Building2, CheckCircle, Lock, User } from "lucide-react"
+import { ArrowLeft, CheckCircle, Lock, User } from "lucide-react"
 import Link from "next/link"
 
 export default function RegisterNGOPage() {
@@ -28,7 +28,7 @@ export default function RegisterNGOPage() {
     missao: "",
     cnpj: "",
   })
-  const [errors, setErrors] = useState<any>({})
+  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({})
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -91,6 +91,7 @@ export default function RegisterNGOPage() {
         description: "Sua solicitação será analisada pela nossa equipe.",
       })
     } catch (error) {
+      console.error(error)
       addToast({
         type: "error",
         title: "Erro no cadastro",
@@ -102,17 +103,18 @@ export default function RegisterNGOPage() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    if (errors[name]) {
-      setErrors((prev: any) => ({ ...prev, [name]: undefined }))
-    }
+  const { name, value } = e.target
+  setFormData((prev) => ({ ...prev, [name]: value }))
+  if (errors[name]) {
+    setErrors((prev) => ({ ...prev, [name]: undefined })) // sem any aqui
   }
+}
+
 
   const handleCategoryChange = (value: string) => {
     setFormData((prev) => ({ ...prev, category: value }))
     if (errors.category) {
-      setErrors((prev: any) => ({ ...prev, category: undefined }))
+      setErrors((prev) => ({ ...prev, category: undefined }))
     }
   }
 

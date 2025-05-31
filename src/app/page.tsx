@@ -36,6 +36,8 @@ export default function Dashboard() {
   const [coldTipsOpen, setColdTipsOpen] = useState(false)
   const [currentWeather, setCurrentWeather] = useState<ProcessedWeatherData | null>(null)
 
+  void currentWeather;
+
   // Filter cities based on search term
   useEffect(() => {
     if (searchTerm.length > 0) {

@@ -29,6 +29,24 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 
+interface ValidationErrorItem {
+  path: string[]
+  message: string
+}
+
+interface ValidationError {
+  errors: ValidationErrorItem[]
+}
+
+function isValidationError(error: unknown): error is ValidationError {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'errors' in error &&
+    Array.isArray((error as ValidationError).errors)
+  )
+}
+
 export default function UpdateUserPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
@@ -108,10 +126,10 @@ export default function UpdateUserPage() {
           description: 'Verifique se a senha atual está correta.',
         })
       }
-    } catch (error: any) {
-      if (error.errors) {
+    } catch (error: unknown) {
+      if (isValidationError(error)) {
         const fieldErrors: Partial<ProfileUpdateFormData> = {}
-        error.errors.forEach((err: any) => {
+        error.errors.forEach((err) => {
           fieldErrors[err.path[0] as keyof ProfileUpdateFormData] = err.message
         })
         setErrors(fieldErrors)

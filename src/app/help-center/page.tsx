@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Heart, Search, MapPin, Globe, Phone, Mail, Building2, CheckCircle } from "lucide-react"
-import Image from "next/image"
+import { Heart, Search, MapPin, Globe, Phone, Mail, Building2, CheckCircle, Home, Utensils, Stethoscope } from "lucide-react"
+
 import { PageContainer } from "@/components/body/page-container"
 import { SectionContainer } from "@/components/body/section-container"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -16,13 +16,14 @@ import { useToast } from "@/hooks/use-toast"
 import { ToastContainer } from "@/components/ui/toast"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
+import { NGO } from "@/types/ngo"
 
 export default function HelpCenterPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [categoryFilter, setCategoryFilter] = useState("all")
-  const [ngos, setNgos] = useState<any[]>([])
+  const [ngos, setNgos] = useState<NGO[]>([])
   const [showDonationForm, setShowDonationForm] = useState(false)
-  const [selectedNGO, setSelectedNGO] = useState<any>(null)
+  const [selectedNGO, setSelectedNGO] = useState<NGO|null>(null)
   const [donationForm, setDonationForm] = useState({ amount: "", type: "money", description: "" })
 
   const { user } = useAuth()
@@ -35,7 +36,7 @@ export default function HelpCenterPage() {
       .catch(() => {
         addToast({ type: "error", title: "Erro", description: "Erro ao buscar ONGs." })
       })
-  }, [])
+  }, [addToast])
 
   const filteredNGOs = ngos.filter((ngo) => {
     const matchesSearch =
@@ -82,23 +83,61 @@ export default function HelpCenterPage() {
     }
   }
 
-  const getCategoryColor = (category: string) => {
+   const getCategoryColor = (category: string) => {
     switch (category) {
-      case "shelter": return "bg-blue-100 text-blue-800"
-      case "food": return "bg-green-100 text-green-800"
-      case "medical": return "bg-red-100 text-red-800"
-      case "general": return "bg-purple-100 text-purple-800"
-      default: return "bg-gray-100 text-gray-800"
+      case "shelter":
+        return "bg-blue-100 text-blue-800"
+      case "food":
+        return "bg-green-100 text-green-800"
+      case "medical":
+        return "bg-red-100 text-red-800"
+      case "general":
+        return "bg-purple-100 text-purple-800"
+      default:
+        return "bg-gray-100 text-gray-800"
     }
   }
 
   const getCategoryLabel = (category: string) => {
     switch (category) {
-      case "shelter": return "Abrigo"
-      case "food": return "Alimentação"
-      case "medical": return "Médico"
-      case "general": return "Geral"
-      default: return category
+      case "shelter":
+        return "Abrigo"
+      case "food":
+        return "Alimentação"
+      case "medical":
+        return "Médico"
+      case "general":
+        return "Geral"
+      default:
+        return category
+    }
+  }
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "shelter":
+        return <Home className="w-8 h-8 text-blue-600" />
+      case "food":
+        return <Utensils className="w-8 h-8 text-green-600" />
+      case "medical":
+        return <Stethoscope className="w-8 h-8 text-red-600" />
+      case "general":
+      default:
+        return <Heart className="w-8 h-8 text-purple-600" />
+    }
+  }
+
+  const getCategoryIconBg = (category: string) => {
+    switch (category) {
+      case "shelter":
+        return "bg-blue-100"
+      case "food":
+        return "bg-green-100"
+      case "medical":
+        return "bg-red-100"
+      case "general":
+      default:
+        return "bg-purple-100"
     }
   }
 
@@ -206,16 +245,23 @@ export default function HelpCenterPage() {
             {filteredNGOs.map((ngo) => (
               <Card key={ngo.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border-0 shadow-md">
                 <CardHeader className="text-center pb-4">
-                  
-                  <div className="space-y-2">
-                    <CardTitle className="text-xl text-gray-900">{ngo.nome}</CardTitle>
-                    <div className="flex items-center justify-center space-x-2">
-                      <MapPin className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-600">{ngo.endereco}</span>
+                    <div className="mx-auto mb-4">
+                      
+                      <div
+                        className={`w-16 h-16 rounded-full mx-auto flex items-center justify-center ${getCategoryIconBg(ngo.categoria)}`}
+                      >
+                        {getCategoryIcon(ngo.categoria)}
+                      </div>
                     </div>
-                    <Badge className={getCategoryColor(ngo.categoria)}>{getCategoryLabel(ngo.categoria)}</Badge>
-                  </div>
-                </CardHeader>
+                    <div className="space-y-2">
+                      <CardTitle className="text-xl text-gray-900">{ngo.nome}</CardTitle>
+                      <div className="flex items-center justify-center space-x-2">
+                        <MapPin className="w-4 h-4 text-gray-500" />
+                        <span className="text-sm text-gray-600">{ngo.endereco}</span>
+                      </div>
+                      <Badge className={getCategoryColor(ngo.categoria)}>{getCategoryLabel(ngo.categoria)}</Badge>
+                    </div>
+                  </CardHeader>
                 <CardContent className="space-y-4">
                   <CardDescription className="text-gray-700 leading-relaxed">{ngo.missao}</CardDescription>
                   <div className="space-y-2 text-sm text-gray-600">

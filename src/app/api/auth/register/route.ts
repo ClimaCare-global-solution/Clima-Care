@@ -6,11 +6,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const userData = registerSchema.parse(body)
 
-    // In a real app, you would:
-    // 1. Hash the password
-    // 2. Save to database
-    // 3. Send verification email
-
     const newUser = {
       id: Math.random().toString(36).substr(2, 9),
       email: userData.email,
@@ -26,6 +21,7 @@ export async function POST(request: NextRequest) {
       message: "Usuário cadastrado com sucesso",
     })
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Erro ao cadastrar usuário" }, { status: 400 })
   }
 }

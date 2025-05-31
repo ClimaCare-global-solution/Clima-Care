@@ -52,3 +52,4 @@ export interface RegisterData {
   tipo: UserRole
   telefone?: string
 }
+

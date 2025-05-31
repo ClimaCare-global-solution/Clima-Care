@@ -10,8 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { PageContainer } from "@/components/body/page-container"
 import { SectionContainer } from "@/components/body/section-container"
 import {
-  User, Mail, Phone, Edit, Heart, Users, Award,
-  Activity, DollarSign, HandHeart
+  User, Mail, Phone, Edit, Heart, Users, 
+  Activity, DollarSign, 
 } from "lucide-react"
 import Link from "next/link"
 import { ToastContainer } from "@/components/ui/toast"
@@ -43,14 +43,14 @@ export default function ProfilePage() {
         .then(res => res.json())
         .then(data => {
           setDonations(data.doacoes || [])
-          const total = (data.doacoes || []).reduce((acc: number, d: any) => acc + (d.valor || 0), 0)
+          const total = (data.doacoes || []).reduce((acc: number, d: { valor: number }) => acc + (d.valor || 0), 0)
           setTotalDonated(total)
         })
         .catch(() => {
           addToast({ type: "error", title: "Erro", description: "Falha ao carregar perfil" })
         })
     }
-  }, [user, loading])
+  }, [user, loading,addToast,router])
 
   if (loading || !user) return null
 

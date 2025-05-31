@@ -55,7 +55,7 @@ export function Navbar() {
                 <Link href="/profile">
                   <Button variant="ghost" size="sm">
                     <User className="w-4 h-4 mr-1" />
-                    {user.name}
+                    {user.nome}
                   </Button>
                 </Link>
                 <Button variant="ghost" size="sm" onClick={handleLogout}>

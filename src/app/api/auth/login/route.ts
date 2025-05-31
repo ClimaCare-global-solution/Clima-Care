@@ -37,14 +37,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Credenciais inválidas" }, { status: 401 })
     }
 
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user
+    
 
     return NextResponse.json({
-      user: userWithoutPassword,
+      
       message: "Login realizado com sucesso",
     })
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: "Erro interno do servidor" }, { status: 500 })
   }
 }

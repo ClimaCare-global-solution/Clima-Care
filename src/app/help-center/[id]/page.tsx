@@ -5,8 +5,8 @@ import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Heart, MapPin, Globe, Phone, Mail, ExternalLink, CheckCircle } from "lucide-react"
-import Image from "next/image"
+import { ArrowLeft, Heart, MapPin, Globe, Phone, Mail, ExternalLink, CheckCircle, Home, Utensils, Stethoscope } from "lucide-react"
+
 import Link from "next/link"
 import { PageContainer } from "@/components/body/page-container"
 import { SectionContainer } from "@/components/body/section-container"
@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
+import { NGO } from "@/types/ngo"
 
 export default function NGODetailPage() {
   const params = useParams()
@@ -34,7 +35,8 @@ export default function NGODetailPage() {
     description: "",
   })
 
-  const [ngo, setNgo] = useState<any>(null)
+ 
+  const [ngo, setNgo] = useState<NGO | null>(null)
 
   useEffect(() => {
     setNgo(null)
@@ -45,7 +47,7 @@ export default function NGODetailPage() {
         addToast({ type: "error", title: "Erro", description: "ONG não encontrada." })
         router.push("/help-center")
       })
-  }, [ngoId])
+  }, [ngoId, addToast, router])
 
   const handleDonationSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,6 +91,7 @@ export default function NGODetailPage() {
       setDonationForm({ amount: "", type: "money", description: "" })
       setShowDonationForm(false)
     } catch (err) {
+      console.error(err)
       addToast({
         type: "error",
         title: "Erro ao doar",
@@ -97,23 +100,60 @@ export default function NGODetailPage() {
     }
   }
 
-  const getCategoryColor = (category: string) => {
+    const getCategoryLabel = (category: string) => {
     switch (category) {
-      case "shelter": return "bg-blue-100 text-blue-800"
-      case "food": return "bg-green-100 text-green-800"
-      case "medical": return "bg-red-100 text-red-800"
-      case "general": return "bg-purple-100 text-purple-800"
-      default: return "bg-gray-100 text-gray-800"
+      case "shelter":
+        return "Abrigo"
+      case "food":
+        return "Alimentação"
+      case "medical":
+        return "Médico"
+      case "general":
+        return "Geral"
+      default:
+        return category
     }
   }
 
-  const getCategoryLabel = (category: string) => {
+  const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "shelter": return "Abrigo"
-      case "food": return "Alimentação"
-      case "medical": return "Médico"
-      case "general": return "Geral"
-      default: return category
+      case "shelter":
+        return <Home className="w-10 h-10 text-blue-600" />
+      case "food":
+        return <Utensils className="w-10 h-10 text-green-600" />
+      case "medical":
+        return <Stethoscope className="w-10 h-10 text-red-600" />
+      case "general":
+      default:
+        return <Heart className="w-10 h-10 text-purple-600" />
+    }
+  }
+    const getCategoryColor = (category: string) => {
+    switch (category) {
+      case "shelter":
+        return "bg-blue-100 text-blue-800"
+      case "food":
+        return "bg-green-100 text-green-800"
+      case "medical":
+        return "bg-red-100 text-red-800"
+      case "general":
+        return "bg-purple-100 text-purple-800"
+      default:
+        return "bg-gray-100 text-gray-800"
+    }
+  }
+
+  const getCategoryIconBg = (category: string) => {
+    switch (category) {
+      case "shelter":
+        return "bg-blue-100"
+      case "food":
+        return "bg-green-100"
+      case "medical":
+        return "bg-red-100"
+      case "general":
+      default:
+        return "bg-purple-100"
     }
   }
 
@@ -216,11 +256,21 @@ export default function NGODetailPage() {
             <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardHeader className="text-center">
-                 
+                  <div className="mx-auto mb-4">
+                    
+                    <div
+                      className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center ${getCategoryIconBg(ngo.categoria)}`}
+                    >
+                      {getCategoryIcon(ngo.categoria)}
+                    </div>
+                  </div>
                   <CardTitle className="text-3xl text-gray-900">{ngo.nome}</CardTitle>
                   <div className="flex items-center justify-center space-x-2 mt-2">
                     <MapPin className="w-5 h-5 text-gray-500" />
                     <span className="text-gray-600">{ngo.endereco}</span>
+                  </div>
+                  <div className="mt-3">
+                    <Badge className={getCategoryColor(ngo.categoria)}>{getCategoryLabel(ngo.categoria)}</Badge>
                   </div>
                 </CardHeader>
               </Card>
@@ -245,7 +295,7 @@ export default function NGODetailPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-green-800 leading-relaxed mb-4">{ngo.donationInstructions}</p>
+                  
                   <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={() => setShowDonationForm(true)}>
                     <Heart className="w-4 h-4 mr-2" />
                     Doar para esta organização

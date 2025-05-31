@@ -3,7 +3,7 @@ import type React from "react"
 interface SectionContainerProps {
   children: React.ReactNode
   className?: string
-  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" | "full"
+  maxWidth?: "sm" | "md" | "lg" | "xl" | "2xl" |"7xl"| "full"
 }
 
 export function SectionContainer({ children, className = "", maxWidth = "7xl" }: SectionContainerProps) {

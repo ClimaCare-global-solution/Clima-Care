@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { fetchWeatherData, brazilianCapitals } from "@/lib/weather-api"
 import { saveClimateAlert, clearOldAlerts } from "@/lib/climate-alerts"
-import { classifyTemperature } from "@/lib/climate-classification"
+import { classifyTemperature, TemperatureClassification } from "@/lib/climate-classification"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -25,6 +25,8 @@ import {
   Loader2,
 } from "lucide-react"
 
+
+
 interface CityWeatherData {
   cityName: string
   state: string
@@ -37,7 +39,7 @@ interface CityWeatherData {
   feelsLike: number
   icon: string
   lastUpdated: number
-  classification: any
+  classification: TemperatureClassification | null
   loading: boolean
   error: string | null
 }

@@ -1,13 +1,10 @@
 export interface NGO {
   id: string
-  name: string
-  logo: string
-  mission: string
-  description: string
-  donationInstructions: string
-  website?: string
-  phone?: string
+  nome: string
+  missao: string
+  site?: string
+  telefone?: string
   email?: string
-  location: string
-  category: "shelter" | "food" | "medical" | "general"
+  endereco: string
+  categoria: "shelter" | "food" | "medical" | "general"
 }
