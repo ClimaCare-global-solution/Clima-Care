@@ -50,7 +50,7 @@ ClimaCare é uma aplicação web completa que oferece monitoramento climático e
 
 ## 🚀 Acesso à Aplicação
 
-A aplicação está disponível em: [https://test121-sigma.vercel.app/](https://test121-sigma.vercel.app/)
+A aplicação está disponível em: https://clima-care-theta.vercel.app/
 
 ### Como Usar
 
