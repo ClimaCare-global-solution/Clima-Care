@@ -225,23 +225,20 @@ export default function RegisterNGOPage() {
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="name">Nome da Organização *</Label>
-                    <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
+                    <Input id="name" name="name" value={formData.name} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="missao">Missão *</Label>
-                    <Textarea
-                      id="missao"
-                      name="missao"
-                      value={formData.missao}
-                      onChange={handleChange}
-                      required
-                    />
+                    <Textarea id="missao" name="missao" value={formData.missao} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="email">Email de Contato *</Label>
-                    <Input id="email" name="email" value={formData.email} onChange={handleChange} required />
+                    <Input id="email" name="email" value={formData.email} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
