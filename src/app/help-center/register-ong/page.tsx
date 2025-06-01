@@ -243,17 +243,20 @@ export default function RegisterNGOPage() {
 
                   <div>
                     <Label htmlFor="phone">Telefone</Label>
-                    <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} />
+                    <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="cnpj">CNPJ *</Label>
-                    <Input id="cnpj" name="cnpj" value={formData.cnpj} onChange={handleChange} required />
+                    <Input id="cnpj" name="cnpj" value={formData.cnpj} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="location">Localização *</Label>
-                    <Input id="location" name="location" value={formData.location} onChange={handleChange} required />
+                    <Input id="location" name="location" value={formData.location} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
@@ -273,7 +276,8 @@ export default function RegisterNGOPage() {
 
                   <div>
                     <Label htmlFor="website">Website</Label>
-                    <Input id="website" name="website" value={formData.website} onChange={handleChange} />
+                    <Input id="website" name="website" value={formData.website} onChange={handleChange} className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
                 </div>
 
