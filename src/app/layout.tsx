@@ -11,7 +11,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "ClimaCare - Plataforma de Ajuda Comunitária",
   description: "Plataforma para apoio comunitário durante eventos climáticos extremos",
-    generator: 'v0.dev'
+  icons: {
+    icon: "/fire-icon.ico", 
+  },
 }
 
 export default function RootLayout({
