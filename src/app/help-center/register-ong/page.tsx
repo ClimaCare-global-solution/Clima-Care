@@ -210,11 +210,12 @@ export default function RegisterNGOPage() {
             <Button
               variant="ghost"
               onClick={() => router.back()}
-              className="flex items-center space-x-2 hover:text-blue-700 hover:bg-blue-100 transition-colors"
+              className="bg-gray-100 text-black hover:bg-blue-500 hover:text-white transition-colors"
             >
-              <ArrowLeft className="w-4 h-4" />
-              <span>Voltar</span>
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
             </Button>
+
 
           </div>
 
