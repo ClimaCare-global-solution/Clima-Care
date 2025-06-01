@@ -5,14 +5,14 @@ import { X, CheckCircle, AlertCircle, AlertTriangle, Info } from "lucide-react"
 
 type ToastType = "success" | "error" | "warning" | "info"
 
-interface Toast {
+export interface Toast {
   id: string
   type: ToastType
   title?: string | React.ReactNode
   description?: string | React.ReactNode
 }
 
-interface ToastProps {
+export interface ToastProps {
   toast: Toast
   onRemove: (id: string) => void
 }
