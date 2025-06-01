@@ -262,7 +262,7 @@ export default function RegisterNGOPage() {
                   <div>
                     <Label htmlFor="category">Categoria *</Label>
                     <Select value={formData.category} onValueChange={handleCategoryChange}>
-                      <SelectTrigger>
+                       <SelectTrigger className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md">
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent className="bg-white">
