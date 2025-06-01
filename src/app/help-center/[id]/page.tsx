@@ -13,7 +13,6 @@ import { SectionContainer } from "@/components/body/section-container"
 import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
-import { ToastContainer } from "@/components/ui/toast"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
@@ -26,7 +25,7 @@ export default function NGODetailPage() {
   const ngoId = params.id as string
 
   const { user } = useAuth()
-  const { toasts, addToast, removeToast } = useToast()
+  const { addToast } = useToast()
 
   const [showDonationForm, setShowDonationForm] = useState(false)
   const [donationForm, setDonationForm] = useState({
@@ -169,7 +168,7 @@ export default function NGODetailPage() {
 
   return (
     <PageContainer background="default">
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+    
       <SectionContainer className="py-8">
         <div className="container mx-auto px-4 py-8">
 

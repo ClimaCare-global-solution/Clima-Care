@@ -14,7 +14,7 @@ import {
   Activity, DollarSign, 
 } from "lucide-react"
 import Link from "next/link"
-import { ToastContainer } from "@/components/ui/toast"
+
 import { useToast } from "@/hooks/use-toast"
 
 interface Donation {
@@ -27,7 +27,7 @@ interface Donation {
 export default function ProfilePage() {
   const { user, loading } = useAuth()
   const router = useRouter()
-  const { toasts, addToast, removeToast } = useToast()
+  const { addToast} = useToast()
 
   const [donations, setDonations] = useState<Donation[]>([])
   const [totalDonated, setTotalDonated] = useState(0)
@@ -73,7 +73,7 @@ export default function ProfilePage() {
 
   return (
     <PageContainer background="default">
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      
       <SectionContainer className="py-8 ">
         <h1 className="flex justify-center text-3xl font-bold text-gray-900 mb-2">Meu Perfil</h1>
         <p className="flex justify-center text-lg text-gray-600 mb-8">Gerencie suas informações e acompanhe sua atividade na plataforma</p>

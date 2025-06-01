@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
-import { ToastContainer } from "@/components/ui/toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -41,7 +40,7 @@ export default function RegisterPage() {
 
   const { register } = useAuth()
   const router = useRouter()
-  const { toasts, addToast, removeToast } = useToast()
+  const {  addToast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -96,7 +95,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -233,7 +232,7 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="bg-blue-400 text-white px-4 py-2 rounded flex items-center cursor-pointer hover:bg-blue-700 transition-colors" disabled={loading}>
                 {loading ? "Criando conta..." : "Criar Conta"}
               </Button>
             </form>

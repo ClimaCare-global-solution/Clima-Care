@@ -13,7 +13,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
-import { ToastContainer } from "@/components/ui/toast"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { NGO } from "@/types/ngo"
@@ -27,7 +26,7 @@ export default function HelpCenterPage() {
   const [donationForm, setDonationForm] = useState({ amount: "", type: "money", description: "" })
 
   const { user } = useAuth()
-  const { toasts, addToast, removeToast } = useToast()
+  const { addToast } = useToast()
 
   useEffect(() => {
     fetch("http://localhost:8080/ong")
@@ -143,7 +142,7 @@ export default function HelpCenterPage() {
 
   return (
     <PageContainer background="default">
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      
       {showDonationForm && selectedNGO && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <Card className="w-full max-w-md">

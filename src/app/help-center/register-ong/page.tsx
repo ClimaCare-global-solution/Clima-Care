@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/contexts/auth-context"
 import { useToast } from "@/hooks/use-toast"
-import { ToastContainer } from "@/components/ui/toast"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -34,7 +34,7 @@ export default function RegisterNGOPage() {
 
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const { toasts, addToast, removeToast } = useToast()
+  const { addToast } = useToast()
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -103,12 +103,12 @@ export default function RegisterNGOPage() {
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  const { name, value } = e.target
-  setFormData((prev) => ({ ...prev, [name]: value }))
-  if (errors[name]) {
-    setErrors((prev) => ({ ...prev, [name]: undefined })) // sem any aqui
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined })) // sem any aqui
+    }
   }
-}
 
 
   const handleCategoryChange = (value: string) => {
@@ -138,7 +138,7 @@ export default function RegisterNGOPage() {
   if (!user) {
     return (
       <PageContainer background="default">
-        <ToastContainer toasts={toasts} onRemove={removeToast} />
+
         <SectionContainer className="py-12">
           <div className="max-w-2xl mx-auto">
             <Card className="border-yellow-200 bg-yellow-50">
@@ -151,12 +151,13 @@ export default function RegisterNGOPage() {
                   Você precisa estar logado para cadastrar uma nova organização na plataforma.
                 </p>
                 <div className="flex justify-center space-x-4">
-                  <Button asChild>
-                    <Link href="/login">
+                  <Button asChild className="bg-blue-400 text-white px-4 py-2 rounded flex items-center cursor-pointer hover:bg-blue-700 transition-colors">
+                    <Link href="/login" className="flex items-center">
                       <User className="w-4 h-4 mr-2" />
                       Fazer Login
                     </Link>
                   </Button>
+
                   <Button asChild variant="outline">
                     <Link href="/register">Criar Conta</Link>
                   </Button>
@@ -202,7 +203,7 @@ export default function RegisterNGOPage() {
 
   return (
     <PageContainer background="default">
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+
       <SectionContainer className="py-8">
         <div className="max-w-3xl mx-auto">
           <div className="mb-6">
