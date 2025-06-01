@@ -207,10 +207,15 @@ export default function RegisterNGOPage() {
       <SectionContainer className="py-8">
         <div className="max-w-3xl mx-auto">
           <div className="mb-6">
-            <Button variant="ghost" onClick={() => router.back()} className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="flex items-center space-x-2 hover:text-blue-700 hover:bg-blue-100 transition-colors"
+            >
               <ArrowLeft className="w-4 h-4" />
               <span>Voltar</span>
             </Button>
+
           </div>
 
           <Card>
@@ -282,9 +287,16 @@ export default function RegisterNGOPage() {
                 </div>
 
                 <div className="flex justify-end space-x-3">
-                  <Button type="button" variant="outline" onClick={() => router.back()}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => router.back()}
+                    className="bg-gray-100 text-black hover:bg-red-500 hover:text-white transition-colors"
+                  >
                     Cancelar
                   </Button>
+
+
                   <Button className="w-full bg-gray-100 text-black hover:bg-blue-500 hover:text-white cursor-pointer transition-colors" type="submit" disabled={loading}>
                     {loading ? "Enviando..." : "Cadastrar Organização"}
                   </Button>
