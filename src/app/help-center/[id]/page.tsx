@@ -39,7 +39,7 @@ export default function NGODetailPage() {
 
   useEffect(() => {
     setNgo(null)
-    fetch(`http://localhost:8080/ong/${ngoId}`)
+    fetch(`https://crudjava.onrender.com/ong/${ngoId}`)
       .then(res => res.json())
       .then(data => setNgo(data))
       .catch(() => {
@@ -71,7 +71,7 @@ export default function NGODetailPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/help-center", {
+      const response = await fetch("https://crudjava.onrender.com/help-center", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

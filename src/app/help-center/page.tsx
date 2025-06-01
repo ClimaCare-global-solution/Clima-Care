@@ -29,7 +29,7 @@ export default function HelpCenterPage() {
   const { addToast } = useToast()
 
   useEffect(() => {
-    fetch("http://localhost:8080/ong")
+    fetch("https://crudjava.onrender.com/ong")
       .then((res) => res.json())
       .then((data) => setNgos(data))
       .catch(() => {
@@ -65,7 +65,7 @@ export default function HelpCenterPage() {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/help-center", {
+      const response = await fetch("https://crudjava.onrender.com/help-center", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(doacao),

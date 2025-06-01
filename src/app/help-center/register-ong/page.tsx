@@ -53,7 +53,7 @@ export default function RegisterNGOPage() {
     setErrors({})
 
     try {
-      const response = await fetch("http://localhost:8080/ong/register", {
+      const response = await fetch("https://crudjava.onrender.com/ong/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -106,7 +106,7 @@ export default function RegisterNGOPage() {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined })) // sem any aqui
+      setErrors((prev) => ({ ...prev, [name]: undefined })) 
     }
   }
 

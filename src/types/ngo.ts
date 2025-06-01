@@ -3,6 +3,7 @@ export interface NGO {
   nome: string
   missao: string
   site?: string
+  cnpj: string
   telefone?: string
   email?: string
   endereco: string

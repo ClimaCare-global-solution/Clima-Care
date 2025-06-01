@@ -39,7 +39,7 @@ export default function ProfilePage() {
     }
 
     if (user) {
-      fetch(`http://localhost:8080/profile?email=${user.email}`)
+      fetch(`https://crudjava.onrender.com/profile?email=${user.email}`)
         .then(res => res.json())
         .then(data => {
           setDonations(data.doacoes || [])
