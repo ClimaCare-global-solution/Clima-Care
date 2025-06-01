@@ -207,10 +207,16 @@ export default function RegisterNGOPage() {
       <SectionContainer className="py-8">
         <div className="max-w-3xl mx-auto">
           <div className="mb-6">
-            <Button variant="ghost" onClick={() => router.back()} className="flex items-center space-x-2">
-              <ArrowLeft className="w-4 h-4" />
-              <span>Voltar</span>
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="bg-gray-100 text-black hover:bg-blue-500 hover:text-white transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
             </Button>
+
+
           </div>
 
           <Card>
@@ -225,44 +231,44 @@ export default function RegisterNGOPage() {
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="name">Nome da Organização *</Label>
-                    <Input id="name" name="name" value={formData.name} onChange={handleChange} required />
+                    <Input id="name" name="name" value={formData.name} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="missao">Missão *</Label>
-                    <Textarea
-                      id="missao"
-                      name="missao"
-                      value={formData.missao}
-                      onChange={handleChange}
-                      required
-                    />
+                    <Textarea id="missao" name="missao" value={formData.missao} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="email">Email de Contato *</Label>
-                    <Input id="email" name="email" value={formData.email} onChange={handleChange} required />
+                    <Input id="email" name="email" value={formData.email} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="phone">Telefone</Label>
-                    <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} />
+                    <Input id="phone" name="phone" value={formData.phone} onChange={handleChange} className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="cnpj">CNPJ *</Label>
-                    <Input id="cnpj" name="cnpj" value={formData.cnpj} onChange={handleChange} required />
+                    <Input id="cnpj" name="cnpj" value={formData.cnpj} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="location">Localização *</Label>
-                    <Input id="location" name="location" value={formData.location} onChange={handleChange} required />
+                    <Input id="location" name="location" value={formData.location} onChange={handleChange} required className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
 
                   <div>
                     <Label htmlFor="category">Categoria *</Label>
                     <Select value={formData.category} onValueChange={handleCategoryChange}>
-                      <SelectTrigger>
+                       <SelectTrigger className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md">
                         <SelectValue placeholder="Selecione uma categoria" />
                       </SelectTrigger>
                       <SelectContent className="bg-white">
@@ -276,15 +282,23 @@ export default function RegisterNGOPage() {
 
                   <div>
                     <Label htmlFor="website">Website</Label>
-                    <Input id="website" name="website" value={formData.website} onChange={handleChange} />
+                    <Input id="website" name="website" value={formData.website} onChange={handleChange} className="border border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500 rounded-md" />
+
                   </div>
                 </div>
 
                 <div className="flex justify-end space-x-3">
-                  <Button type="button" variant="outline" onClick={() => router.back()}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => router.back()}
+                    className="bg-gray-100 text-black hover:bg-red-500 hover:text-white transition-colors"
+                  >
                     Cancelar
                   </Button>
-                  <Button type="submit" disabled={loading}>
+
+
+                  <Button className="w-full bg-gray-100 text-black hover:bg-blue-500 hover:text-white cursor-pointer transition-colors" type="submit" disabled={loading}>
                     {loading ? "Enviando..." : "Cadastrar Organização"}
                   </Button>
                 </div>
