@@ -1,19 +1,98 @@
-Clima Care
-Clima Care é uma aplicação web moderna e intuitiva, desenvolvida para oferecer informações climáticas precisas e acessíveis. Com uma interface amigável, o projeto visa facilitar o monitoramento e a análise de dados meteorológicos, apoiando usuários na tomada de decisões informadas relacionadas ao clima.
+# ClimaCare 🌤️
 
-Funcionalidades
-Consulta de dados climáticos atualizados: Exibe informações em tempo real sobre temperatura, umidade, condições do tempo e outras variáveis importantes para análise climática.
+**Sua proteção climática inteligente**
 
-Interface responsiva e acessível: Design clean e adaptável a dispositivos móveis e desktops, garantindo uma experiência fluida para todos os usuários.
+ClimaCare é uma aplicação web completa que oferece monitoramento climático em tempo real, dicas especializadas de proteção meteorológica e uma plataforma de doações para instituições brasileiras que auxiliam pessoas afetadas por condições climáticas extremas.
 
-Armazenamento seguro e confiável: Os dados coletados e gerados pela aplicação são enviados para um backend robusto desenvolvido em Java, que se comunica com um banco de dados para garantir a persistência e integridade das informações.
+## 🎯 Funcionalidades Principais
 
-Atualização contínua: Possibilidade de atualizar e sincronizar os dados facilmente, permitindo que o sistema esteja sempre com informações recentes e relevantes.
+### 🌡️ Monitoramento Climático
+- **Cobertura Nacional**: Monitoramento disponível para todas as capitais brasileiras
+- **Dados em Tempo Real**: Informações meteorológicas atualizadas constantemente
+- **Interface Intuitiva**: Busca fácil por cidade para visualização dos dados climáticos
+- **Visualização Completa**: Apresentação clara das condições climáticas atuais
 
-Arquitetura
-A aplicação frontend foi construída utilizando tecnologias modernas, enquanto o backend é implementado em Java, responsável pelo processamento, armazenamento e gerenciamento dos dados climáticos no banco de dados, garantindo segurança e desempenho.
+### 🛡️ Guia de Proteção Climática
+- **Proteção contra Calor Extremo**: Estratégias essenciais para dias de alta temperatura
+- **Proteção contra Frio Intenso**: Técnicas para manter o calor corporal e prevenir hipotermia
+- **Dicas Especializadas**: Orientações específicas para cada situação meteorológica
+- **Prevenção de Riscos**: Informações para manter-se seguro durante condições climáticas adversas
 
-Equipe
-Caio Lucas Silva Gomes — RM 560077
+### 💝 Sistema de Doações
+- **Apoio a Instituições**: Plataforma para doações a organizações de todo o Brasil
+- **Foco Social**: Auxílio àqueles que necessitam de proteção contra intempéries climáticas
+- **Impacto Nacional**: Conectando doadores com instituições em diferentes regiões do país
 
-Madjer Henrique Almeida Finamor — RM 560716
+## 🏗️ Arquitetura do Sistema
+
+### Frontend
+- **Framework**: Next.js com React
+- **Hospedagem**: Vercel
+- **Interface**: Design responsivo e intuitivo
+- **Funcionalidades**: SPA (Single Page Application) com navegação fluida
+
+### Backend
+- **Tecnologia**: Java
+- **Funcionalidades**: 
+  - API REST para dados climáticos
+  - Gerenciamento de usuários e doações
+  - Integração com APIs meteorológicas
+  - Processamento de dados em tempo real
+
+### Banco de Dados
+- **Armazenamento**: Sistema de banco de dados robusto
+- **Dados Gerenciados**:
+  - Informações climáticas históricas
+  - Cadastro de usuários
+  - Registro de doações
+  - Dados das instituições beneficiárias
+  - Logs de monitoramento
+
+## 🚀 Acesso à Aplicação
+
+A aplicação está disponível em: [https://test121-sigma.vercel.app/](https://test121-sigma.vercel.app/)
+
+### Como Usar
+
+1. **Monitoramento Climático**:
+   - Acesse a página principal
+   - Utilize o campo de busca para selecionar uma capital brasileira
+   - Visualize os dados meteorológicos em tempo real
+
+2. **Consultoria de Proteção**:
+   - Navegue pelo Guia de Proteção Climática
+   - Consulte as dicas específicas para cada condição climática
+   - Aplique as estratégias recomendadas conforme necessário
+
+3. **Sistema de Doações**:
+   - Explore as instituições disponíveis
+   - Realize doações para apoiar comunidades vulneráveis
+   - Contribua para a proteção climática social
+
+## 👥 Equipe de Desenvolvimento
+
+- **Caio Lucas Silva Gomes** — RM 560077
+- **Madjer Henrique Almeida Finamor** — RM 560716
+
+## 🎯 Objetivo do Projeto
+
+O ClimaCare foi desenvolvido com o objetivo de criar uma solução integrada que combina:
+
+- **Informação**: Dados climáticos precisos e acessíveis
+- **Educação**: Orientações especializadas para proteção pessoal
+- **Solidariedade**: Plataforma para apoio a comunidades vulneráveis
+- **Tecnologia**: Sistema moderno e eficiente para impacto social positivo
+
+## 🌟 Diferenciais
+
+- ✅ Cobertura completa das capitais brasileiras
+- ✅ Interface moderna e responsiva
+- ✅ Integração backend Java robusta
+- ✅ Sistema de doações integrado
+- ✅ Foco na proteção e bem-estar social
+- ✅ Dados meteorológicos em tempo real
+- ✅ Orientações especializadas por condição climática
+
+---
+
+**ClimaCare** - Protegendo vidas através da tecnologia e solidariedade. 🤝🌤️
