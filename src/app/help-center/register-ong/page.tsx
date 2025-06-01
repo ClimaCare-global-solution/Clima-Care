@@ -284,7 +284,7 @@ export default function RegisterNGOPage() {
                   <Button type="button" variant="outline" onClick={() => router.back()}>
                     Cancelar
                   </Button>
-                  <Button type="submit" disabled={loading}>
+                  <Button className="w-full bg-gray-100 text-black hover:bg-blue-500 hover:text-white cursor-pointer transition-colors" type="submit" disabled={loading}>
                     {loading ? "Enviando..." : "Cadastrar Organização"}
                   </Button>
                 </div>
