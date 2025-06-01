@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/auth-context'
 import { useToast } from '@/hooks/use-toast'
-import { ToastContainer } from '@/components/ui/toast'
+
 import { profileUpdateSchema, type ProfileUpdateFormData } from '@/lib/schemas'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -50,7 +50,7 @@ function isValidationError(error: unknown): error is ValidationError {
 export default function UpdateUserPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const { toasts, addToast, removeToast } = useToast()
+  const {addToast } = useToast()
 
   const [formData, setFormData] = useState<ProfileUpdateFormData>({
     email: '',
@@ -164,7 +164,7 @@ export default function UpdateUserPage() {
   if (!user) {
     return (
       <PageContainer background="default">
-        <ToastContainer toasts={toasts} onRemove={removeToast} />
+        
         <SectionContainer className="py-12">
           <div className="max-w-2xl mx-auto">
             <Card className="border-yellow-200 bg-yellow-50">
@@ -195,7 +195,7 @@ export default function UpdateUserPage() {
 
   return (
     <PageContainer background="default">
-      <ToastContainer toasts={toasts} onRemove={removeToast} />
+      
       <SectionContainer className="py-8">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
