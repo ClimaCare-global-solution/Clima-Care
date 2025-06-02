@@ -5,7 +5,10 @@ import { useParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Heart, MapPin, Globe, Phone, Mail, ExternalLink, CheckCircle, Home, Utensils, Stethoscope } from "lucide-react"
+import {
+  ArrowLeft, Heart, MapPin, Globe, Phone, Mail,
+  ExternalLink, CheckCircle, AlertCircle, Home, Utensils, Stethoscope
+} from "lucide-react"
 
 import Link from "next/link"
 import { PageContainer } from "@/components/body/page-container"
@@ -34,8 +37,9 @@ export default function NGODetailPage() {
     description: "",
   })
 
- 
   const [ngo, setNgo] = useState<NGO | null>(null)
+  const [showConfirmationCard, setShowConfirmationCard] = useState(false)
+  const [showLoginWarningCard, setShowLoginWarningCard] = useState(false)
 
   useEffect(() => {
     setNgo(null)
@@ -89,6 +93,10 @@ export default function NGODetailPage() {
 
       setDonationForm({ amount: "", type: "money", description: "" })
       setShowDonationForm(false)
+
+      setShowConfirmationCard(true)
+      setTimeout(() => setShowConfirmationCard(false), 5000)
+
     } catch (err) {
       console.error(err)
       addToast({
@@ -99,60 +107,52 @@ export default function NGODetailPage() {
     }
   }
 
-    const getCategoryLabel = (category: string) => {
+  const getCategoryLabel = (category: string) => {
     switch (category) {
-      case "shelter":
-        return "Abrigo"
-      case "food":
-        return "Alimentação"
-      case "medical":
-        return "Médico"
-      case "general":
-        return "Geral"
-      default:
-        return category
+      case "shelter": return "Abrigo"
+      case "food": return "Alimentação"
+      case "medical": return "Médico"
+      case "general": return "Geral"
+      default: return category
     }
   }
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case "shelter":
-        return <Home className="w-10 h-10 text-blue-600" />
-      case "food":
-        return <Utensils className="w-10 h-10 text-green-600" />
-      case "medical":
-        return <Stethoscope className="w-10 h-10 text-red-600" />
+      case "shelter": return <Home className="w-10 h-10 text-blue-600" />
+      case "food": return <Utensils className="w-10 h-10 text-green-600" />
+      case "medical": return <Stethoscope className="w-10 h-10 text-red-600" />
       case "general":
-      default:
-        return <Heart className="w-10 h-10 text-purple-600" />
+      default: return <Heart className="w-10 h-10 text-purple-600" />
     }
   }
-    const getCategoryColor = (category: string) => {
+
+  const getCategoryColor = (category: string) => {
     switch (category) {
-      case "shelter":
-        return "bg-blue-100 text-blue-800"
-      case "food":
-        return "bg-green-100 text-green-800"
-      case "medical":
-        return "bg-red-100 text-red-800"
-      case "general":
-        return "bg-purple-100 text-purple-800"
-      default:
-        return "bg-gray-100 text-gray-800"
+      case "shelter": return "bg-blue-100 text-blue-800"
+      case "food": return "bg-green-100 text-green-800"
+      case "medical": return "bg-red-100 text-red-800"
+      case "general": return "bg-purple-100 text-purple-800"
+      default: return "bg-gray-100 text-gray-800"
     }
   }
 
   const getCategoryIconBg = (category: string) => {
     switch (category) {
-      case "shelter":
-        return "bg-blue-100"
-      case "food":
-        return "bg-green-100"
-      case "medical":
-        return "bg-red-100"
+      case "shelter": return "bg-blue-100"
+      case "food": return "bg-green-100"
+      case "medical": return "bg-red-100"
       case "general":
-      default:
-        return "bg-purple-100"
+      default: return "bg-purple-100"
+    }
+  }
+
+  const handleOpenDonationForm = () => {
+    if (!user) {
+      setShowLoginWarningCard(true)
+      setTimeout(() => setShowLoginWarningCard(false), 5000)
+    } else {
+      setShowDonationForm(true)
     }
   }
 
@@ -168,9 +168,38 @@ export default function NGODetailPage() {
 
   return (
     <PageContainer background="default">
-    
       <SectionContainer className="py-8">
         <div className="container mx-auto px-4 py-8">
+
+          {/* Card de Confirmação */}
+          {showConfirmationCard && (
+            <div className="fixed top-6 right-6 z-50 animate-fade-in">
+              <Card className="bg-green-100 border border-green-400 text-green-900 p-4 rounded-xl shadow-lg w-[300px]">
+                <div className="flex items-center space-x-3">
+                  <CheckCircle className="text-green-600 w-6 h-6" />
+                  <div>
+                    <h4 className="font-semibold">Doação confirmada!</h4>
+                    <p className="text-sm">Sua doação para <strong>{ngo.nome}</strong> foi registrada com sucesso.</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* Card de Aviso de Login */}
+          {showLoginWarningCard && (
+            <div className="fixed top-6 right-6 z-50 animate-fade-in">
+              <Card className="bg-yellow-100 border border-yellow-400 text-yellow-900 p-4 rounded-xl shadow-lg w-[300px]">
+                <div className="flex items-center space-x-3">
+                  <AlertCircle className="text-yellow-600 w-6 h-6" />
+                  <div>
+                    <h4 className="font-semibold">Atenção</h4>
+                    <p className="text-sm">Você precisa estar logado para fazer uma doação.</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          )}
 
           {/* Donation Modal */}
           {showDonationForm && (
@@ -198,8 +227,6 @@ export default function NGODetailPage() {
                         </SelectTrigger>
                         <SelectContent className="bg-white">
                           <SelectItem value="money">💰 Dinheiro</SelectItem>
-                          <SelectItem value="item">📦 Itens/Produtos</SelectItem>
-                          <SelectItem value="service">🕐 Serviço/Tempo</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -209,7 +236,7 @@ export default function NGODetailPage() {
                       <Input
                         id="amount"
                         type="number"
-                        min="0.01"
+                        min="0.00"
                         value={donationForm.amount}
                         onChange={(e) => setDonationForm((prev) => ({ ...prev, amount: e.target.value }))}
                         required
@@ -223,16 +250,15 @@ export default function NGODetailPage() {
                         value={donationForm.description}
                         onChange={(e) => setDonationForm((prev) => ({ ...prev, description: e.target.value }))}
                         placeholder="Descreva sua doação..."
-                        required
                       />
                     </div>
 
                     <div className="flex space-x-3">
-                      <Button type="submit" className="flex-1">
+                      <Button type="submit" className="flex-1 bg-blue-300 hover:bg-blue-700 cursor-pointer">
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Confirmar Doação
                       </Button>
-                      <Button type="button" variant="outline" onClick={() => setShowDonationForm(false)}>
+                      <Button className="hover:bg-red-400 cursor-pointer" type="button" variant="outline" onClick={() => setShowDonationForm(false)}>
                         Cancelar
                       </Button>
                     </div>
@@ -251,12 +277,10 @@ export default function NGODetailPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               <Card>
                 <CardHeader className="text-center">
                   <div className="mx-auto mb-4">
-                    
                     <div
                       className={`w-20 h-20 rounded-full mx-auto flex items-center justify-center ${getCategoryIconBg(ngo.categoria)}`}
                     >
@@ -277,14 +301,11 @@ export default function NGODetailPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Nossa Missão</CardTitle>
-                  <CardDescription className="text-sm mt-1">
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700">{ngo.missao}</p>
                 </CardContent>
               </Card>
-
 
               <Card>
                 <CardHeader>
@@ -294,8 +315,10 @@ export default function NGODetailPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  
-                  <Button className="bg-green-600 hover:bg-green-700 text-white" onClick={() => setShowDonationForm(true)}>
+                  <Button
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                    onClick={handleOpenDonationForm}
+                  >
                     <Heart className="w-4 h-4 mr-2" />
                     Doar para esta organização
                   </Button>

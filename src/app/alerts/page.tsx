@@ -52,7 +52,7 @@ export default function AlertsPage() {
   const [loading, setLoading] = useState(true)
   const [loadingProgress, setLoadingProgress] = useState(0)
 
-  // Initialize cities data
+  
   useEffect(() => {
     const initializeCities = () => {
       const initialData = brazilianCapitals.map((city) => ({
@@ -78,7 +78,7 @@ export default function AlertsPage() {
     loadAllCitiesWeather()
   }, [])
 
-  // Helper function to get state abbreviation from city name
+  
   const getStateFromCity = (cityName: string): string => {
     const cityStateMap: Record<string, string> = {
       "São Paulo": "SP",
@@ -115,13 +115,12 @@ export default function AlertsPage() {
     setLoading(true)
     setLoadingProgress(0)
 
-    // Clear old alerts first
+    
     clearOldAlerts()
 
     const totalCities = brazilianCapitals.length
     let completedCities = 0
 
-    // Load cities in batches to avoid overwhelming the API
     const batchSize = 5
     for (let i = 0; i < brazilianCapitals.length; i += batchSize) {
       const batch = brazilianCapitals.slice(i, i + batchSize)
@@ -134,7 +133,7 @@ export default function AlertsPage() {
             if (weatherData) {
               const classification = classifyTemperature(weatherData.temperature)
 
-              // Save to climate alerts system
+             
               saveClimateAlert(weatherData)
 
               setCitiesData((prev) =>
@@ -183,7 +182,7 @@ export default function AlertsPage() {
         }),
       )
 
-      // Small delay between batches to be respectful to the API
+      
       if (i + batchSize < brazilianCapitals.length) {
         await new Promise((resolve) => setTimeout(resolve, 1000))
       }
@@ -196,7 +195,7 @@ export default function AlertsPage() {
     loadAllCitiesWeather()
   }
 
-  // Filter cities based on search and filters
+  
   const filteredCities = citiesData.filter((city) => {
     const matchesSearch =
       city.cityName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -218,7 +217,7 @@ export default function AlertsPage() {
     return matchesSearch && matchesSeverity && matchesStatus
   })
 
-  // Calculate statistics
+  
   const statistics = {
     total: citiesData.filter((c) => !c.loading && !c.error).length,
     heatAlerts: citiesData.filter((c) => c.classification?.alertType === "heat").length,
@@ -407,7 +406,7 @@ export default function AlertsPage() {
             <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filtrar por status" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="all">Todos os status</SelectItem>
               <SelectItem value="heat">Alertas de Calor</SelectItem>
               <SelectItem value="cold">Alertas de Frio</SelectItem>
@@ -418,7 +417,7 @@ export default function AlertsPage() {
             <SelectTrigger className="w-full md:w-48">
               <SelectValue placeholder="Filtrar por severidade" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white">
               <SelectItem value="all">Todas as severidades</SelectItem>
               <SelectItem value="extreme">Extremo</SelectItem>
               <SelectItem value="high">Alto</SelectItem>

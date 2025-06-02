@@ -9,7 +9,13 @@ import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { AlertTriangle, Eye, EyeOff } from "lucide-react"
 
 interface LoginFormData {
@@ -18,19 +24,24 @@ interface LoginFormData {
 }
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState<LoginFormData>({ email: "", password: "" })
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: "",
+    password: "",
+  })
   const [errors, setErrors] = useState<Partial<LoginFormData>>({})
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [loginError, setLoginError] = useState<string | null>(null) // novo estado
 
   const { login } = useAuth()
   const router = useRouter()
-  const { addToast} = useToast()
+  const { addToast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setErrors({})
+    setLoginError(null)
 
     if (!formData.email || !formData.password) {
       setErrors({
@@ -51,11 +62,7 @@ export default function LoginPage() {
       })
       router.push("/")
     } else {
-      addToast({
-        type: "error",
-        title: "Erro no login",
-        description: typeof result === "string" ? result : "Email ou senha incorretos.",
-      })
+      setLoginError(typeof result === "string" ? result : "Email ou senha incorretos.") // define erro visível no card
     }
 
     setLoading(false)
@@ -71,7 +78,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-      
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -84,9 +90,18 @@ export default function LoginPage() {
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>
-            <CardDescription>Entre com suas credenciais para acessar a plataforma</CardDescription>
+            <CardDescription>
+              Entre com suas credenciais para acessar a plataforma
+            </CardDescription>
           </CardHeader>
           <CardContent>
+            {loginError && (
+              <div className="mb-4 flex items-start space-x-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md">
+                <AlertTriangle className="h-5 w-5 mt-0.5 text-red-500" />
+                <p className="text-sm">{loginError}</p>
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Label htmlFor="email">Email</Label>
@@ -101,7 +116,9 @@ export default function LoginPage() {
                   className={errors.email ? "border-red-500" : ""}
                   placeholder="seu@email.com"
                 />
-                {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                {errors.email && (
+                  <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                )}
               </div>
 
               <div>
@@ -130,17 +147,26 @@ export default function LoginPage() {
                     )}
                   </button>
                 </div>
-                {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+                {errors.password && (
+                  <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                )}
               </div>
 
-              <Button type="submit" className="bg-blue-400 text-white px-4 py-2 rounded flex items-center cursor-pointer hover:bg-blue-700 transition-colors" disabled={loading}>
+              <Button
+                type="submit"
+                className="bg-blue-400 text-white px-4 py-2 rounded flex items-center cursor-pointer hover:bg-blue-700 transition-colors"
+                disabled={loading}
+              >
                 {loading ? "Entrando..." : "Entrar"}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-gray-600">
               Não tem uma conta?{" "}
-              <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+              <Link
+                href="/register"
+                className="font-medium text-blue-600 hover:text-blue-500"
+              >
                 Cadastre-se aqui
               </Link>
             </div>

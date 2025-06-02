@@ -60,7 +60,7 @@ export function Navbar() {
             {user ? (
               <div className="flex items-center space-x-2">
                 <Link href="/profile">
-                  <Button variant="ghost" size="sm" className="hover:bg-blue-50">
+                  <Button variant="ghost" size="sm" className="hover:bg-blue-50 cursor-pointer">
                     <User className="w-4 h-4 mr-1" />
                     Perfil
                   </Button>
