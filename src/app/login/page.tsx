@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react" // 🔧 Removido useEffect
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
@@ -52,8 +52,6 @@ export default function LoginPage() {
       return
     }
 
-    let timeout: NodeJS.Timeout
-
     const retryLogin = async () => {
       const result = await login(formData.email, formData.password)
 
@@ -72,8 +70,8 @@ export default function LoginPage() {
       setLoading(false)
     }
 
-    // Se demorar mais de 10 segundos, tenta novamente
-    timeout = setTimeout(() => {
+    // 🔧 Corrigido: de `let` para `const`
+    const timeout = setTimeout(() => {
       retryLogin()
     }, 10000)
 
