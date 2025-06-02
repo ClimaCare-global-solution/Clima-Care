@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
@@ -31,7 +31,7 @@ export default function LoginPage() {
   const [errors, setErrors] = useState<Partial<LoginFormData>>({})
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [loginError, setLoginError] = useState<string | null>(null) // novo estado
+  const [loginError, setLoginError] = useState<string | null>(null)
 
   const { login } = useAuth()
   const router = useRouter()
@@ -39,9 +39,9 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
     setErrors({})
     setLoginError(null)
+    setLoading(true)
 
     if (!formData.email || !formData.password) {
       setErrors({
@@ -52,20 +52,32 @@ export default function LoginPage() {
       return
     }
 
-    const result = await login(formData.email, formData.password)
+    let timeout: NodeJS.Timeout
 
-    if (result === true) {
-      addToast({
-        type: "success",
-        title: "Login realizado com sucesso!",
-        description: "Bem-vindo de volta ao ClimaCare.",
-      })
-      router.push("/")
-    } else {
-      setLoginError(typeof result === "string" ? result : "Email ou senha incorretos.") // define erro visível no card
+    const retryLogin = async () => {
+      const result = await login(formData.email, formData.password)
+
+      if (result === true) {
+        addToast({
+          type: "success",
+          title: "Login realizado com sucesso!",
+          description: "Bem-vindo de volta ao ClimaCare.",
+        })
+        router.push("/")
+      } else {
+        setLoginError(typeof result === "string" ? result : "Email ou senha incorretos.")
+      }
+
+      clearTimeout(timeout)
+      setLoading(false)
     }
 
-    setLoading(false)
+    // Se demorar mais de 10 segundos, tenta novamente
+    timeout = setTimeout(() => {
+      retryLogin()
+    }, 10000)
+
+    await retryLogin()
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -152,13 +164,19 @@ export default function LoginPage() {
                 )}
               </div>
 
-              <Button
-                type="submit"
-                className="bg-blue-400 text-white px-4 py-2 rounded flex items-center cursor-pointer hover:bg-blue-700 transition-colors"
-                disabled={loading}
-              >
-                {loading ? "Entrando..." : "Entrar"}
-              </Button>
+              <div className="flex items-center space-x-4">
+                <Button
+                  type="submit"
+                  className="bg-blue-400 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+                  disabled={loading}
+                >
+                  Entrar
+                </Button>
+
+                {loading && (
+                  <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                )}
+              </div>
             </form>
 
             <div className="mt-6 text-center text-sm text-gray-600">
