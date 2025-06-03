@@ -68,6 +68,9 @@ A aplicação está disponível em: https://clima-care-theta.vercel.app/
    - Explore as instituições disponíveis
    - Realize doações para apoiar comunidades vulneráveis
    - Contribua para a proteção climática social
+  
+4. ## Link de apresentação do site
+   - https://www.youtube.com/watch?v=WEYVEg1ecPY
 
 ## 👥 Equipe de Desenvolvimento
 
